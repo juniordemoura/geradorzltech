@@ -1,223 +1,114 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gerador de Currículo | MJR Dev</title>
-    <link rel="stylesheet" href="style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZL Tech | Professional Suite</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+    <!-- Biblioteca para PDF -->
+    <script src="https://cloudflare.com"></script>
+</head>
+<body>
 
-    <!-- ========== NAVBAR ========== -->
     <header class="navbar">
-      <div class="navbar__inner">
-        <a href="#" class="navbar__logo">
-          TECH - ZL <span>Gerador de Currículo</span>
-        </a>
-        <nav class="navbar__links">
-          <a href="#formulario">Formulário</a>
-          <a href="#preview">Preview</a>
-          <button class="btn btn--primary" id="btn-exportar">
-            Exportar HTML ↓
-          </button>
-        </nav>
-        <button class="navbar__hamburger" id="hamburger" aria-label="Abrir menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-      <div class="navbar__mobile" id="mobile-menu">
-        <a href="#formulario" onclick="fecharMenu()">Formulário</a>
-        <a href="#preview" onclick="fecharMenu()">Preview</a>
-        <button class="btn btn--primary" onclick="exportarCV(); fecharMenu()">
-          Exportar HTML ↓
-        </button>
-      </div>
+        <div class="navbar__inner">
+            <a href="#" class="navbar__logo">TECH - ZL <span>Gerador Profissional</span></a>
+            <nav class="navbar__links">
+                <button class="nav-item active" onclick="mostrarTab('curriculo')">Gerador de CV</button>
+                <button class="nav-item" onclick="mostrarTab('prompt')">Engenharia de Prompt (RH)</button>
+            </nav>
+        </div>
     </header>
 
-    <!-- ========== HERO ========== -->
-    <section class="hero">
-      <div class="hero__texto">
-        <p class="hero__eyebrow">Monte seu Curriculo Gratuito · ADS 2025</p>
-        <h1 class="hero__titulo">
-          Monte seu <span class="hero__destaque">Currículo</span>
-          profissional
-        </h1>
-        <p class="hero__sub">
-          Preencha o formulário, visualize em tempo real e exporte um HTML
-          pronto para usar ou imprimir como PDF.
-        </p>
-        <div class="hero__acoes">
-          <a href="#formulario" class="btn btn--primary btn--lg">Começar agora →</a>
-          <a href="#preview" class="btn btn--ghost btn--lg">Ver preview</a>
-        </div>
-      </div>
-      <div class="hero__visual" aria-hidden="true">
-        <div class="hero__circulo hero__circulo--1"></div>
-        <div class="hero__circulo hero__circulo--2"></div>
-        <div class="hero__circulo hero__circulo--3"></div>
-        <div class="hero__tag hero__tag--1">HTML5</div>
-        <div class="hero__tag hero__tag--2">CSS3</div>
-        <div class="hero__tag hero__tag--3">JavaScript</div>
-        <div class="hero__tag hero__tag--4">ADS</div>
-      </div>
-    </section>
-
-    <!-- ========== MAIN: FORM + PREVIEW ========== -->
-    <main class="main" id="formulario">
-
-      <!-- PAINEL FORMULÁRIO -->
-      <aside class="painel-form">
-        <div class="painel-form__topo">
-          <h2 class="painel-form__titulo">Seus dados</h2>
-          <span class="painel-form__hint">Edite e veja ao vivo →</span>
-        </div>
-
-        <!-- ABAS -->
-        <div class="abas" role="tablist">
-          <button class="aba aba--ativa" data-aba="pessoal" role="tab">Pessoal</button>
-          <button class="aba" data-aba="experiencia" role="tab">Experiência</button>
-          <button class="aba" data-aba="educacao" role="tab">Educação</button>
-          <button class="aba" data-aba="extras" role="tab">Extras</button>
-        </div>
-
-        <!-- ABA PESSOAL -->
-        <div class="aba-conteudo aba-conteudo--ativa" id="aba-pessoal" role="tabpanel">
-          <div class="campo">
-            <label for="nome">Nome completo <span class="obrig">*</span></label>
-            <input type="text" id="nome" placeholder="Ex: Mauricio Junior" />
-          </div>
-          <div class="campo">
-            <label for="cargo">Cargo / Título profissional</label>
-            <input type="text" id="cargo" placeholder="Ex: Desenvolvedor Front-End | Estudante de ADS" />
-          </div>
-          <div class="campo-linha">
-            <div class="campo">
-              <label for="email">E-mail</label>
-              <input type="email" id="email" placeholder="seu@email.com" />
+    <!-- SEÇÃO GERADOR DE CURRÍCULO -->
+    <main id="secao-cv" class="main-container">
+        <section class="form-side">
+            <h2>Dados do Profissional</h2>
+            <div class="input-group">
+                <label>Nome Completo</label>
+                <input type="text" id="nome" oninput="atualizarPreview()" placeholder="Ex: Mauricio Junior">
             </div>
-            <div class="campo">
-              <label for="telefone">Telefone</label>
-              <input type="tel" id="telefone" placeholder="(11) 99999-0000" />
+            <div class="input-group">
+                <label>Cargo Alvo</label>
+                <input type="text" id="cargo" oninput="atualizarPreview()" placeholder="Ex: Engenheiro de Software">
             </div>
-          </div>
-          <div class="campo-linha">
-            <div class="campo">
-              <label for="cidade">Cidade / Estado</label>
-              <input type="text" id="cidade" placeholder="São Paulo, SP" />
+            <div class="input-group">
+                <label>E-mail</label>
+                <input type="email" id="email" oninput="atualizarPreview()" placeholder="email@exemplo.com">
             </div>
-            <div class="campo">
-              <label for="linkedin">LinkedIn</label>
-              <input type="text" id="linkedin" placeholder="linkedin.com/in/perfil" />
+            <div class="input-group">
+                <label>Resumo Profissional</label>
+                <textarea id="resumo" oninput="atualizarPreview()" rows="4"></textarea>
             </div>
-          </div>
-          <div class="campo-linha">
-            <div class="campo">
-              <label for="github">GitHub</label>
-              <input type="text" id="github" placeholder="github.com/usuario" />
+            <div class="input-group">
+                <label>Principais Habilidades (separadas por vírgula)</label>
+                <input type="text" id="habilidades" oninput="atualizarPreview()" placeholder="Java, SQL, Liderança...">
             </div>
-            <div class="campo">
-              <label for="instagram">Instagram</label>
-              <input type="text" id="instagram" placeholder="instagram.com/perfil" />
+            
+            <div class="button-row">
+                <button class="btn btn-secondary" onclick="window.location.reload()">Limpar</button>
+                <button class="btn btn-primary" onclick="baixarPDF()">Baixar PDF ↑</button>
             </div>
-          </div>
-          <div class="campo">
-            <label for="resumo">Sobre mim / Resumo profissional</label>
-            <textarea id="resumo" rows="5"
-              placeholder="Descreva seu perfil, objetivos e diferenciais..."></textarea>
-          </div>
-        </div>
+        </section>
 
-        <!-- ABA EXPERIÊNCIA -->
-        <div class="aba-conteudo" id="aba-experiencia" role="tabpanel">
-          <div id="lista-experiencias"></div>
-          <button class="btn-adicionar" onclick="adicionarExperiencia()">
-            <span class="btn-adicionar__icone">+</span>
-            Adicionar experiência
-          </button>
-        </div>
-
-        <!-- ABA EDUCAÇÃO -->
-        <div class="aba-conteudo" id="aba-educacao" role="tabpanel">
-          <div id="lista-educacao"></div>
-          <button class="btn-adicionar" onclick="adicionarEducacao()">
-            <span class="btn-adicionar__icone">+</span>
-            Adicionar formação
-          </button>
-          <div class="campo" style="margin-top: 20px;">
-            <label for="cursos">
-              Cursos e certificados
-              <small>(um por linha)</small>
-            </label>
-            <textarea id="cursos" rows="4"
-              placeholder="HTML5&#10;CSS3&#10;JavaScript&#10;Git e GitHub"></textarea>
-          </div>
-        </div>
-
-        <!-- ABA EXTRAS -->
-        <div class="aba-conteudo" id="aba-extras" role="tabpanel">
-          <div class="campo">
-            <label for="habilidades">
-              Habilidades técnicas
-              <small>(separadas por vírgula)</small>
-            </label>
-            <input type="text" id="habilidades"
-              placeholder="HTML5, CSS3, JavaScript, Git, GitHub" />
-          </div>
-          <div class="campo">
-            <label for="idiomas">
-              Idiomas
-              <small>(separados por vírgula)</small>
-            </label>
-            <input type="text" id="idiomas"
-              placeholder="Português (Nativo), Inglês (Básico)" />
-          </div>
-          <div class="campo">
-            <label for="mensagem">Por que devo ser contratado?</label>
-            <textarea id="mensagem" rows="5"
-              placeholder="Sua mensagem de destaque..."></textarea>
-          </div>
-        </div>
-
-        <!-- AÇÕES -->
-        <div class="form-acoes">
-          <button class="btn btn--ghost" onclick="limparFormulario()">Limpar tudo</button>
-          <button class="btn btn--primary" onclick="exportarCV()">Exportar HTML ↓</button>
-        </div>
-      </aside>
-
-      <!-- PAINEL PREVIEW -->
-      <section class="painel-preview" id="preview">
-        <div class="painel-preview__topo">
-          <h2 class="painel-preview__titulo">Preview em tempo real</h2>
-          <span class="badge-live">
-            <span class="badge-live__ponto"></span>
-            Ao vivo
-          </span>
-        </div>
-        <div class="cv-moldura">
-          <div id="cv-preview" class="cv">
-            <!-- Gerado pelo script.js -->
-          </div>
-        </div>
-      </section>
-
+        <section class="preview-side">
+            <div id="cv-final" class="cv-document">
+                <header class="cv-header">
+                    <h1 id="p-nome">Seu Nome</h1>
+                    <p id="p-cargo">Cargo Pretendido</p>
+                    <div id="p-contato">email@exemplo.com</div>
+                </header>
+                <hr>
+                <div class="cv-section">
+                    <h3>Resumo Profissional</h3>
+                    <p id="p-resumo">Seu resumo profissional aparecerá aqui conforme você digita no formulário à esquerda.</p>
+                </div>
+                <div class="cv-section">
+                    <h3>Habilidades Técnicas</h3>
+                    <div id="p-habilidades" class="skills-grid"></div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- ========== FOOTER ========== -->
-    <footer class="footer">
-      <p>
-        Desenvolvido por <strong><a href="https://github.com/juniordemoura" target="_blank">Mauricio Junior</a></strong> ·
-        Gerador de Currículo · 2025
-      </p>
-      <p class="footer__sub">HTML · CSS · JavaScript · ADS</p>
-    </footer>
+    <!-- SEÇÃO GERADOR DE PROMPT (NOVO) -->
+    <main id="secao-prompt" class="main-container" style="display: none;">
+        <section class="full-panel">
+            <h2>Assistente de Recrutamento (AI Prompt Engine)</h2>
+            <p>Selecione os parâmetros para gerar um prompt de triagem de alta precisão.</p>
+            
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label>Vaga Disponível</label>
+                    <input type="text" id="vaga-nome" placeholder="Ex: Desenvolvedor Fullstack Sênior">
+                </div>
+                <div class="input-group">
+                    <label>Nível de Experiência</label>
+                    <select id="vaga-nivel">
+                        <option value="Estagiário/Júnior">Júnior / Estágio</option>
+                        <option value="Pleno">Pleno</option>
+                        <option value="Sênior/Especialista">Sênior / Especialista</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Habilidades Indispensáveis (Hard Skills)</label>
+                <textarea id="vaga-skills" rows="3" placeholder="Ex: React, Node.js, AWS, Inglês Avançado"></textarea>
+            </div>
+
+            <button class="btn btn-primary" onclick="gerarPrompt()">Gerar Prompt para IA</button>
+
+            <div id="resultado-prompt" class="prompt-box" style="display: none;">
+                <h3>Prompt Gerado:</h3>
+                <div id="texto-prompt" class="code-area"></div>
+                <button class="btn btn-copy" onclick="copiarPrompt()">Copiar Prompt</button>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
+
